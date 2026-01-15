@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 from google.cloud import storage
 from src.logger import get_logger
@@ -43,15 +44,16 @@ class DataIngestion:
 
         except Exception as e:
             logger.error(f"Error downloading data from GCS: {e}")
-            raise CustomException(e)
+            raise CustomException(e, sys)
         
     def run(self):
         """Executes the data ingestion process."""
         try:
             self.download_data_from_gcs()
             logger.info("Data ingestion completed successfully.")
-        except CustomException as ce:
-            logger.error(f"Custom Exception: {str(ce)}")
+        except Exception as e:
+            logger.error(f"Custom Exception: {str(e)}")
+            raise CustomException(e, sys)
         finally:
             logger.info("Data ingestion process finished.")
 

@@ -209,6 +209,5 @@ __marimo__/
 
 #directories
 /dataset/
+/secrets/
 
-#files
-mlops-udemy-480003-f15d666478bb.json
