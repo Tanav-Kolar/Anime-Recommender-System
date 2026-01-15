@@ -10,3 +10,5 @@ How to run
 
 2. Initialise project setup
 uv pip install -e .
+
+3. Since the animelist.csv file is too big, we perform selective data ingestion.
