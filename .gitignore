@@ -210,4 +210,4 @@ __marimo__/
 #directories
 /dataset/
 /secrets/
-
+/logs/
