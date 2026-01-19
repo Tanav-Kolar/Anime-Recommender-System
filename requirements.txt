@@ -6,3 +6,6 @@ pyyaml
 tensorflow
 keras
 matplotlib
+scikit-learn
+flask
+joblib
