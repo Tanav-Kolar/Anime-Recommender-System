@@ -9,3 +9,5 @@ matplotlib
 scikit-learn
 flask
 joblib
+comet-ml
+dotenv

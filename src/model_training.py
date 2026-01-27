@@ -1,3 +1,4 @@
+import comet_ml
 import joblib
 import numpy as np
 import os
@@ -8,14 +9,25 @@ from src.custom_exception import CustomException
 from src.base_model import BaseModel
 from config.path_config import *
 
-logger = get_logger(__name__)
+from dotenv import load_dotenv
 
+load_dotenv()
+
+logger = get_logger(__name__)
 
 
 class ModelTraining:
     def __init__ (self, data_path):
         self.data_path = data_path
         logger.info("ModelTraining initialized")
+        
+
+        self.experiment = comet_ml.Experiment(
+            API_KEY = os.getenv("COMET_API_KEY"),
+            project_name="mlops-hybrid-anime-recommender",
+            workspace="tanav-kolar")
+        
+        logger.info("Comet ML initialized")
 
     def load_data(self):
         try:
@@ -80,9 +92,17 @@ class ModelTraining:
                     validation_data = (X_test, y_test),
                     callbacks = my_callbacks
                 )
-                
+
                 model.load_weights(CHECKPOINT_FILE_PATH)
                 logger.info("Model training completed successfully.")
+
+                for epoch in range(len(history.history['loss'])):
+                    train_loss = history.history['loss'][epoch]
+                    val_loss = history.history['val_loss'][epoch]
+
+                    self.experiment.log_metric("train_loss", train_loss, step=epoch)
+                    self.experiment.log_metric("val_loss", val_loss, step=epoch)
+
 
             except Exception as e:
                 raise CustomException("Model training failed.",e)
@@ -115,6 +135,10 @@ class ModelTraining:
             joblib.dump(user_weights, USER_WEIGHTS_PATH)
             joblib.dump(anime_weights, ANIME_WEIGHTS_PATH)
 
+            self.experiment.log_asset(MODEL_PATH)
+            self.experiment.log_asset(USER_WEIGHTS_PATH)
+            self.experiment.log_asset(ANIME_WEIGHTS_PATH)
+
             logger.info("User and Anime weights extracted and saved successfully.")
 
         except Exception as e:
@@ -124,3 +148,4 @@ class ModelTraining:
 if __name__ == "__main__":
     model_trainer = ModelTraining(data_path=PROCESSED_DIR)
     model_trainer.train_model()
+
