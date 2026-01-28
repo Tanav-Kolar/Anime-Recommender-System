@@ -11,3 +11,5 @@ if __name__ == "__main__":
 
     model_trainer = ModelTraining(data_path=PROCESSED_DIR)
     model_trainer.train_model()
+
+    
