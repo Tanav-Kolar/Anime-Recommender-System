@@ -12,3 +12,4 @@ joblib
 comet-ml
 dotenv
 dvc
+Docker
