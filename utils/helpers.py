@@ -25,13 +25,13 @@ def getSynopsis(anime, path_synopsis_df):
 
 #### 3. CONTENT RECOMMENDATION
 
-def find_similar_animes(name, path_anime_weights, path_anime2anime_encoded, path_anime2anime_decoded, path_df, path_synopsis_df, n=10, return_dist=False, neg=False):
+def find_similar_animes(name, path_anime_weights, path_anime2anime_encoded, path_anime2anime_decoded, path_anime_df, path_synopsis_df, n=10, return_dist=False, neg=False):
     #read the relvant files
 
     anime_weights = joblib.load(path_anime_weights)
     anime2anime_encoded = joblib.load(path_anime2anime_encoded)
     anime2anime_decoded = joblib.load(path_anime2anime_decoded)
-    df = pd.read_csv(path_df)
+    df = pd.read_csv(path_anime_df)
     synopsis_df = pd.read_csv(path_synopsis_df)
 
    
